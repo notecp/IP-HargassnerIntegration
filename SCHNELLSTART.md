@@ -85,6 +85,8 @@ Starte Home Assistant neu.
    - **Sensor-Set:**
      - `STANDARD` - 17 wichtigste Sensoren
      - `FULL` - Alle 228 Sensoren aus dem Firmware-Template
+   - **Heizwert Pellets:** `4.8` kWh/kg (Standard, kann angepasst werden)
+   - **Wirkungsgrad:** `90` % (Standard, kann angepasst werden)
 5. Klicke auf **Absenden**
 
 Die Sensoren werden automatisch erstellt!
