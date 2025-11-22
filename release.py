@@ -280,7 +280,71 @@ def update_all_versions(version: str) -> list[Path]:
     return updated_files
 
 
-def create_release(version: str, push: bool = True) -> None:
+def create_github_release(version: str) -> bool:
+    """
+    Create a GitHub release using gh CLI.
+
+    Args:
+        version: Version string (e.g., "0.1.1")
+
+    Returns:
+        True if successful, False otherwise
+    """
+    tag_name = f"v{version}"
+
+    print_step("Creating GitHub release...")
+
+    # Check if gh CLI is available
+    result = run_command(['gh', '--version'], check=False)
+    if result.returncode != 0:
+        print_error("GitHub CLI (gh) not found. Please install it from: https://cli.github.com/")
+        print_info("You can create the release manually at:")
+        print(f"  https://github.com/bauer-group/IP-HargassnerIntegration/releases/new?tag={tag_name}")
+        return False
+
+    # Generate release notes
+    release_title = f"Release v{version}"
+    release_notes = f"""## Release v{version}
+
+This release includes:
+- Version bump to v{version}
+- Updated manifest.json, SCHNELLSTART.md, and documentation
+
+### Installation via HACS
+
+1. Open HACS in Home Assistant
+2. Go to "Integrations"
+3. Search for "BAUERGROUP Hargassner"
+4. Update to version v{version}
+
+### Manual Installation
+
+Download the latest release and copy `custom_components/bauergroup_hargassnerintegration` to your Home Assistant config directory.
+
+---
+🤖 Generated with automated release script
+"""
+
+    # Create release
+    try:
+        result = run_command([
+            'gh', 'release', 'create', tag_name,
+            '--title', release_title,
+            '--notes', release_notes
+        ], check=True, capture=False)
+
+        print_success(f"Created GitHub release: {tag_name}")
+        print_info(f"View release at: https://github.com/bauer-group/IP-HargassnerIntegration/releases/tag/{tag_name}")
+        return True
+
+    except subprocess.CalledProcessError:
+        print_error("Failed to create GitHub release")
+        print_info("You can create it manually at:")
+        print(f"  https://github.com/bauer-group/IP-HargassnerIntegration/releases/new?tag={tag_name}")
+        return False
+
+
+def create_release(version: str, push: bool = True, github_release: bool = True) -> None:
     """
     Create a release with the given version.
 
@@ -375,10 +439,22 @@ def create_release(version: str, push: bool = True) -> None:
 
             print_success(f"Release v{version} completed successfully!")
             print()
+
+            # Create GitHub release
+            if github_release:
+                print()
+                create_github_release(version)
+                print()
+
             print_info("Next steps:")
-            print(f"  1. Create a GitHub release at: https://github.com/bauer-group/IP-HargassnerIntegration/releases/new?tag={tag_name}")
-            print("  2. Wait for HACS to recognize the new version")
-            print("  3. Test installation via HACS")
+            if not github_release:
+                print(f"  1. Create a GitHub release at: https://github.com/bauer-group/IP-HargassnerIntegration/releases/new?tag={tag_name}")
+                print("  2. Wait for HACS to recognize the new version")
+                print("  3. Test installation via HACS")
+            else:
+                print("  1. Wait for HACS to recognize the new version (may take a few minutes)")
+                print("  2. Test installation/update via HACS")
+                print("  3. Verify integration works correctly")
         else:
             print_info("Push cancelled. You can push manually later with:")
             print(f"  git push origin {get_current_branch()}")
@@ -418,6 +494,12 @@ Examples:
         help='Do not push to remote (only create local commit and tag)'
     )
 
+    parser.add_argument(
+        '--no-github-release',
+        action='store_true',
+        help='Do not create GitHub release (only push tag)'
+    )
+
     args = parser.parse_args()
 
     # Get version from argument or prompt
@@ -431,7 +513,11 @@ Examples:
 
     # Create release
     try:
-        create_release(version, push=not args.no_push)
+        create_release(
+            version,
+            push=not args.no_push,
+            github_release=not args.no_github_release
+        )
     except KeyboardInterrupt:
         print()
         print_error("Aborted by user")

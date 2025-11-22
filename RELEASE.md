@@ -25,6 +25,7 @@ Das `release.py` Script automatisiert den gesamten Release-Prozess:
 - Automatischer Commit: `chore: Bump version to v0.x.x`
 - Git Tag erstellen: `v0.x.x`
 - Push zu Remote (GitHub)
+- Automatisches GitHub Release erstellen
 
 ✅ **Validierung**:
 - Semantic Versioning (z.B. 0.1.0)
@@ -44,6 +45,7 @@ Das Script wird:
 2. Änderungen committen
 3. Tag `v0.1.1` erstellen
 4. Nach Bestätigung zu GitHub pushen
+5. Automatisch GitHub Release erstellen (via `gh` CLI)
 
 ### Interaktive Eingabe
 
@@ -60,6 +62,14 @@ python release.py 0.1.1 --no-push
 ```
 
 Erstellt Commit und Tag lokal, pusht aber nicht zu GitHub.
+
+### Ohne GitHub Release
+
+```bash
+python release.py 0.1.1 --no-github-release
+```
+
+Pusht zu GitHub, erstellt aber kein Release (nur Tag).
 
 ## Schritt-für-Schritt Anleitung
 
@@ -129,15 +139,20 @@ Continue? (y/n): y
 ✓ Done!
 ```
 
-### 3. GitHub Release erstellen
+### 3. GitHub Release wird automatisch erstellt
 
-Nach erfolgreichem Push:
+Das Script erstellt automatisch ein GitHub Release mit:
 
-1. Gehe zu: `https://github.com/bauer-group/IP-HargassnerIntegration/releases/new?tag=v0.1.1`
-2. Fülle das Release-Formular aus:
-   - **Release title**: `v0.1.1`
-   - **Description**: Changelog / Was ist neu
-3. Klicke auf **Publish release**
+- **Title**: `Release v0.1.1`
+- **Release Notes**: Automatisch generiert mit Installationsanleitung
+- **Tag**: `v0.1.1`
+
+**Voraussetzung**: GitHub CLI (`gh`) muss installiert sein
+
+- Installation: <https://cli.github.com/>
+- Nach Installation: `gh auth login`
+
+Falls `gh` nicht verfügbar ist, wird ein Link zum manuellen Erstellen angezeigt.
 
 ### 4. HACS Update testen
 
@@ -223,15 +238,6 @@ git push origin main --force
 ```
 
 **⚠️ Vorsicht:** Force Push nur verwenden wenn Release noch nicht von anderen genutzt wird!
-
-## Legacy Scripts
-
-Die alten Shell/Batch Scripts sind noch vorhanden aber deprecated:
-
-- ~~`release.sh`~~ (Linux/Mac) → Verwende `release.py`
-- ~~`release.bat`~~ (Windows) → Verwende `release.py`
-
-`release.py` ist plattformunabhängig und funktioniert überall wo Python läuft.
 
 ## Troubleshooting
 
