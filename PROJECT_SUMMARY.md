@@ -186,7 +186,7 @@ This message contains 138 values corresponding to:
 
 ## Installation
 
-### Via HACS (Future)
+### Via HACS
 1. Add custom repository
 2. Install integration
 3. Restart HA
