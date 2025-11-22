@@ -113,8 +113,12 @@ async def async_setup_entry(
                 else:
                     state_class = SensorStateClass.MEASUREMENT
 
-            # Use parameter description as display name (already bilingual in firmware_templates.py)
-            display_name = param_def.description
+            # Select language from bilingual description
+            desc_dict = param_def.description
+            if isinstance(desc_dict, dict):
+                display_name = desc_dict.get(language.lower(), desc_dict.get("en", param_name))
+            else:
+                display_name = desc_dict  # Fallback if it's already a string
 
             # Create sensor
             entities.append(
