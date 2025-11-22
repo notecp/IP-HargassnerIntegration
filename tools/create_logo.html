@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HACS Logo Generator - Hargassner Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background: #FF5722;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #F4511E;
+        }
+        .preview {
+            text-align: center;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Hargassner HACS Logo Generator</h1>
+
+        <div class="info">
+            <strong>Info:</strong> Dieses Tool erstellt ein professionelles Logo für deine HACS Integration.
+            Die Datei wird als "logo.png" (256x256px) heruntergeladen.
+        </div>
+
+        <div class="controls">
+            <label>Icon Design:</label>
+            <select id="iconType">
+                <option value="fire">🔥 Feuer (Fire)</option>
+                <option value="fireplace">🏠 Kamin (Fireplace)</option>
+                <option value="flame">🔥 Flamme (Flame)</option>
+                <option value="radiator">📻 Heizkörper (Radiator)</option>
+                <option value="text">H Text Logo</option>
+            </select>
+
+            <label>Hintergrundfarbe:</label>
+            <input type="color" id="bgColor" value="#FF5722">
+
+            <label>Icon-Farbe:</label>
+            <input type="color" id="iconColor" value="#FFFFFF">
+
+            <label>Größe:</label>
+            <select id="size">
+                <option value="256">256x256 (Standard)</option>
+                <option value="512">512x512 (Hochauflösend)</option>
+            </select>
+        </div>
+
+        <div class="preview">
+            <canvas id="logoCanvas" width="256" height="256"></canvas>
+        </div>
+
+        <div style="text-align: center;">
+            <button onclick="generateLogo()">Vorschau aktualisieren</button>
+            <button onclick="downloadLogo()">Logo herunterladen</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawFire(ctx, x, y, size) {
+            // Outer flame
+            ctx.fillStyle = '#FFA000';
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x - size/3, y - size/2, x - size/2, y - size, x, y - size*1.2);
+            ctx.bezierCurveTo(x + size/2, y - size, x + size/3, y - size/2, x, y);
+            ctx.fill();
+
+            // Inner flame
+            ctx.fillStyle = '#FFEB3B';
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x - size/6, y - size/3, x - size/4, y - size/1.5, x, y - size);
+            ctx.bezierCurveTo(x + size/4, y - size/1.5, x + size/6, y - size/3, x, y);
+            ctx.fill();
+        }
+
+        function drawFireplace(ctx, x, y, size) {
+            // House
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(x - size/2, y - size/3, size, size/1.5);
+
+            // Roof
+            ctx.beginPath();
+            ctx.moveTo(x - size/1.5, y - size/3);
+            ctx.lineTo(x, y - size);
+            ctx.lineTo(x + size/1.5, y - size/3);
+            ctx.fill();
+
+            // Fire in middle
+            drawFire(ctx, x, y + size/6, size/3);
+        }
+
+        function drawRadiator(ctx, x, y, size) {
+            ctx.fillStyle = '#FFFFFF';
+            const bars = 5;
+            const barWidth = size / (bars * 2);
+            const barHeight = size * 0.8;
+
+            for (let i = 0; i < bars; i++) {
+                const barX = x - size/2 + i * (size / (bars - 1));
+                ctx.fillRect(barX - barWidth/2, y - barHeight/2, barWidth, barHeight);
+            }
+        }
+
+        function drawText(ctx, x, y, size) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = `bold ${size}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('H', x, y);
+        }
+
+        function generateLogo() {
+            const iconType = document.getElementById('iconType').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const iconColor = document.getElementById('iconColor').value;
+            const size = parseInt(document.getElementById('size').value);
+
+            // Update canvas size
+            canvas.width = size;
+            canvas.height = size;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Draw background circle
+            ctx.fillStyle = bgColor;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw icon
+            const center = size / 2;
+            const iconSize = size * 0.5;
+
+            switch(iconType) {
+                case 'fire':
+                case 'flame':
+                    drawFire(ctx, center, center + iconSize/4, iconSize);
+                    break;
+                case 'fireplace':
+                    drawFireplace(ctx, center, center, iconSize);
+                    break;
+                case 'radiator':
+                    drawRadiator(ctx, center, center, iconSize);
+                    break;
+                case 'text':
+                    drawText(ctx, center, center, iconSize);
+                    break;
+            }
+        }
+
+        function downloadLogo() {
+            const link = document.createElement('a');
+            link.download = 'logo.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Generate initial logo
+        generateLogo();
+
+        // Update on changes
+        document.getElementById('iconType').addEventListener('change', generateLogo);
+        document.getElementById('bgColor').addEventListener('input', generateLogo);
+        document.getElementById('iconColor').addEventListener('input', generateLogo);
+        document.getElementById('size').addEventListener('change', generateLogo);
+    </script>
+</body>
+</html>
