@@ -152,80 +152,132 @@
         const canvas = document.getElementById('logoCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Icon libraries data
+        // Comprehensive icon libraries data
+        // Material Design Icons - Full heating, home, energy, and control categories
         const mdiIcons = {
-            // Heating & Fire
-            'mdi-fire': 'Fire',
-            'mdi-fire-circle': 'Fire Circle',
-            'mdi-fire-alert': 'Fire Alert',
-            'mdi-fire-off': 'Fire Off',
-            'mdi-fireplace': 'Fireplace',
-            'mdi-fireplace-off': 'Fireplace Off',
-            'mdi-flame': 'Flame',
-            'mdi-flame-circle': 'Flame Circle',
-            'mdi-radiator': 'Radiator',
-            'mdi-radiator-disabled': 'Radiator Disabled',
-            'mdi-radiator-off': 'Radiator Off',
-            // Heating systems
-            'mdi-heat-pump': 'Heat Pump',
-            'mdi-heat-pump-outline': 'Heat Pump Outline',
-            'mdi-heat-wave': 'Heat Wave',
-            'mdi-heating-coil': 'Heating Coil',
-            'mdi-home-thermometer': 'Home Thermometer',
-            'mdi-home-thermometer-outline': 'Home Thermometer Outline',
-            'mdi-thermostat': 'Thermostat',
-            'mdi-thermostat-box': 'Thermostat Box',
-            // Boiler & Energy
-            'mdi-water-boiler': 'Water Boiler',
-            'mdi-water-boiler-alert': 'Water Boiler Alert',
-            'mdi-water-boiler-auto': 'Water Boiler Auto',
-            'mdi-water-boiler-off': 'Water Boiler Off',
-            'mdi-gas-burner': 'Gas Burner',
-            'mdi-stove': 'Stove',
-            // Temperature
-            'mdi-thermometer': 'Thermometer',
-            'mdi-thermometer-high': 'Thermometer High',
-            'mdi-thermometer-low': 'Thermometer Low',
-            'mdi-thermometer-alert': 'Thermometer Alert',
-            'mdi-temperature-celsius': 'Temperature Celsius',
+            // Fire & Flames
+            'mdi-fire': 'Fire', 'mdi-fire-alert': 'Fire Alert', 'mdi-fire-circle': 'Fire Circle',
+            'mdi-fire-extinguisher': 'Fire Extinguisher', 'mdi-fire-hydrant': 'Fire Hydrant',
+            'mdi-fire-off': 'Fire Off', 'mdi-fire-truck': 'Fire Truck', 'mdi-fireplace': 'Fireplace',
+            'mdi-fireplace-off': 'Fireplace Off', 'mdi-firework': 'Firework', 'mdi-firework-off': 'Firework Off',
+            'mdi-flame': 'Flame', 'mdi-flame-circle': 'Flame Circle', 'mdi-flame-off': 'Flame Off',
+
+            // Heating & Radiators
+            'mdi-radiator': 'Radiator', 'mdi-radiator-disabled': 'Radiator Disabled', 'mdi-radiator-off': 'Radiator Off',
+            'mdi-heat-pump': 'Heat Pump', 'mdi-heat-pump-outline': 'Heat Pump Outline', 'mdi-heat-wave': 'Heat Wave',
+            'mdi-heating-coil': 'Heating Coil', 'mdi-hvac': 'HVAC', 'mdi-hvac-off': 'HVAC Off',
+
+            // Boilers & Water
+            'mdi-water-boiler': 'Water Boiler', 'mdi-water-boiler-alert': 'Water Boiler Alert',
+            'mdi-water-boiler-auto': 'Water Boiler Auto', 'mdi-water-boiler-off': 'Water Boiler Off',
+            'mdi-water-pump': 'Water Pump', 'mdi-water-pump-off': 'Water Pump Off',
+            'mdi-gas-burner': 'Gas Burner', 'mdi-gas-cylinder': 'Gas Cylinder', 'mdi-gas-station': 'Gas Station',
+            'mdi-stove': 'Stove', 'mdi-kettle': 'Kettle', 'mdi-kettle-alert': 'Kettle Alert',
+            'mdi-kettle-off': 'Kettle Off', 'mdi-kettle-outline': 'Kettle Outline',
+
+            // Temperature & Thermometers
+            'mdi-thermometer': 'Thermometer', 'mdi-thermometer-alert': 'Thermometer Alert',
+            'mdi-thermometer-auto': 'Thermometer Auto', 'mdi-thermometer-bluetooth': 'Thermometer Bluetooth',
+            'mdi-thermometer-check': 'Thermometer Check', 'mdi-thermometer-chevron-down': 'Thermometer Down',
+            'mdi-thermometer-chevron-up': 'Thermometer Up', 'mdi-thermometer-high': 'Thermometer High',
+            'mdi-thermometer-lines': 'Thermometer Lines', 'mdi-thermometer-low': 'Thermometer Low',
+            'mdi-thermometer-minus': 'Thermometer Minus', 'mdi-thermometer-off': 'Thermometer Off',
+            'mdi-thermometer-plus': 'Thermometer Plus', 'mdi-thermostat': 'Thermostat',
+            'mdi-thermostat-auto': 'Thermostat Auto', 'mdi-thermostat-box': 'Thermostat Box',
+            'mdi-thermostat-cog': 'Thermostat Cog', 'mdi-temperature-celsius': 'Temperature Celsius',
+            'mdi-temperature-fahrenheit': 'Temperature Fahrenheit', 'mdi-temperature-kelvin': 'Temperature Kelvin',
+
+            // Home & Building
+            'mdi-home': 'Home', 'mdi-home-outline': 'Home Outline', 'mdi-home-account': 'Home Account',
+            'mdi-home-alert': 'Home Alert', 'mdi-home-automation': 'Home Automation',
+            'mdi-home-circle': 'Home Circle', 'mdi-home-city': 'Home City', 'mdi-home-floor-0': 'Home Floor 0',
+            'mdi-home-floor-1': 'Home Floor 1', 'mdi-home-floor-2': 'Home Floor 2', 'mdi-home-floor-3': 'Home Floor 3',
+            'mdi-home-floor-a': 'Home Floor A', 'mdi-home-floor-b': 'Home Floor B',
+            'mdi-home-floor-g': 'Home Floor G', 'mdi-home-floor-l': 'Home Floor L',
+            'mdi-home-group': 'Home Group', 'mdi-home-heart': 'Home Heart', 'mdi-home-lightning-bolt': 'Home Lightning',
+            'mdi-home-lock': 'Home Lock', 'mdi-home-minus': 'Home Minus', 'mdi-home-plus': 'Home Plus',
+            'mdi-home-roof': 'Home Roof', 'mdi-home-thermometer': 'Home Thermometer',
+            'mdi-home-thermometer-outline': 'Home Thermometer Outline', 'mdi-home-variant': 'Home Variant',
+
             // Energy & Power
-            'mdi-lightning-bolt': 'Lightning Bolt',
-            'mdi-lightning-bolt-circle': 'Lightning Bolt Circle',
-            'mdi-flash': 'Flash',
-            'mdi-flash-circle': 'Flash Circle',
-            'mdi-power': 'Power',
-            'mdi-meter-electric': 'Meter Electric',
-            'mdi-gauge': 'Gauge',
-            'mdi-gauge-empty': 'Gauge Empty',
-            'mdi-gauge-full': 'Gauge Full',
+            'mdi-lightning-bolt': 'Lightning Bolt', 'mdi-lightning-bolt-circle': 'Lightning Bolt Circle',
+            'mdi-lightning-bolt-outline': 'Lightning Bolt Outline', 'mdi-flash': 'Flash',
+            'mdi-flash-alert': 'Flash Alert', 'mdi-flash-auto': 'Flash Auto', 'mdi-flash-circle': 'Flash Circle',
+            'mdi-flash-off': 'Flash Off', 'mdi-flash-outline': 'Flash Outline',
+            'mdi-power': 'Power', 'mdi-power-off': 'Power Off', 'mdi-power-on': 'Power On',
+            'mdi-power-plug': 'Power Plug', 'mdi-power-plug-off': 'Power Plug Off',
+            'mdi-power-plug-outline': 'Power Plug Outline', 'mdi-power-settings': 'Power Settings',
+            'mdi-power-socket': 'Power Socket', 'mdi-power-socket-au': 'Power Socket AU',
+            'mdi-power-socket-de': 'Power Socket DE', 'mdi-power-socket-eu': 'Power Socket EU',
+            'mdi-power-socket-fr': 'Power Socket FR', 'mdi-power-socket-jp': 'Power Socket JP',
+            'mdi-power-socket-uk': 'Power Socket UK', 'mdi-power-socket-us': 'Power Socket US',
+
+            // Meters & Gauges
+            'mdi-gauge': 'Gauge', 'mdi-gauge-empty': 'Gauge Empty', 'mdi-gauge-full': 'Gauge Full',
+            'mdi-gauge-low': 'Gauge Low', 'mdi-meter-electric': 'Meter Electric',
+            'mdi-meter-electric-outline': 'Meter Electric Outline', 'mdi-meter-gas': 'Meter Gas',
+            'mdi-meter-gas-outline': 'Meter Gas Outline', 'mdi-speedometer': 'Speedometer',
+            'mdi-speedometer-medium': 'Speedometer Medium', 'mdi-speedometer-slow': 'Speedometer Slow',
+
+            // Controls & Sensors
+            'mdi-chip': 'Chip', 'mdi-circle': 'Circle', 'mdi-circle-outline': 'Circle Outline',
+            'mdi-cog': 'Cog', 'mdi-cog-outline': 'Cog Outline', 'mdi-dots-horizontal-circle': 'Dots Circle',
+            'mdi-fuel': 'Fuel', 'mdi-oil': 'Oil', 'mdi-oil-lamp': 'Oil Lamp', 'mdi-oil-level': 'Oil Level',
+            'mdi-oil-temperature': 'Oil Temperature', 'mdi-barrel': 'Barrel', 'mdi-propane-tank': 'Propane Tank',
+
+            // Smoke & Air
+            'mdi-air-filter': 'Air Filter', 'mdi-air-purifier': 'Air Purifier', 'mdi-smoke': 'Smoke',
+            'mdi-smoke-detector': 'Smoke Detector', 'mdi-smoke-detector-alert': 'Smoke Detector Alert',
+            'mdi-smoke-detector-off': 'Smoke Detector Off', 'mdi-smoke-detector-outline': 'Smoke Detector Outline',
+            'mdi-smoke-detector-variant': 'Smoke Detector Variant', 'mdi-smoke-detector-variant-alert': 'Smoke Alert Variant',
+            'mdi-smoke-detector-variant-off': 'Smoke Off Variant',
+
+            // Industry & Factory
+            'mdi-factory': 'Factory', 'mdi-warehouse': 'Warehouse', 'mdi-domain': 'Domain',
         };
 
+        // Font Awesome Icons - Comprehensive heating and home collection
         const faIcons = {
-            // Fire & Heating
-            'fa-fire': 'Fire',
-            'fa-fire-flame-curved': 'Fire Flame Curved',
-            'fa-fire-flame-simple': 'Fire Flame Simple',
-            'fa-fire-burner': 'Fire Burner',
-            // Temperature
-            'fa-temperature-high': 'Temperature High',
-            'fa-temperature-low': 'Temperature Low',
-            'fa-temperature-half': 'Temperature Half',
-            'fa-temperature-full': 'Temperature Full',
-            'fa-temperature-empty': 'Temperature Empty',
-            // Energy
-            'fa-bolt': 'Bolt',
-            'fa-bolt-lightning': 'Bolt Lightning',
-            'fa-fire-flame-curved': 'Flame Curved',
-            // House & Home
-            'fa-house-fire': 'House Fire',
-            'fa-house-chimney': 'House Chimney',
-            // Industry
-            'fa-industry': 'Industry',
-            'fa-oil-can': 'Oil Can',
-            // Gauges
-            'fa-gauge': 'Gauge',
-            'fa-gauge-high': 'Gauge High',
-            'fa-gauge-simple': 'Gauge Simple',
+            // Fire & Flames
+            'fa-fire': 'Fire', 'fa-fire-flame-curved': 'Fire Flame Curved', 'fa-fire-flame-simple': 'Fire Flame Simple',
+            'fa-fire-burner': 'Fire Burner', 'fa-fire-extinguisher': 'Fire Extinguisher',
+
+            // Temperature & Climate
+            'fa-temperature-empty': 'Temperature Empty', 'fa-temperature-quarter': 'Temperature Quarter',
+            'fa-temperature-half': 'Temperature Half', 'fa-temperature-three-quarters': 'Temperature 3/4',
+            'fa-temperature-full': 'Temperature Full', 'fa-temperature-high': 'Temperature High',
+            'fa-temperature-low': 'Temperature Low', 'fa-temperature-arrow-down': 'Temperature Down',
+            'fa-temperature-arrow-up': 'Temperature Up',
+
+            // Home & Building
+            'fa-house': 'House', 'fa-house-chimney': 'House Chimney', 'fa-house-fire': 'House Fire',
+            'fa-house-user': 'House User', 'fa-house-circle-check': 'House Check',
+            'fa-house-circle-exclamation': 'House Alert', 'fa-house-signal': 'House Signal',
+            'fa-building': 'Building', 'fa-city': 'City',
+
+            // Energy & Power
+            'fa-bolt': 'Bolt', 'fa-bolt-lightning': 'Bolt Lightning', 'fa-plug': 'Plug',
+            'fa-plug-circle-bolt': 'Plug Bolt', 'fa-plug-circle-check': 'Plug Check',
+            'fa-plug-circle-exclamation': 'Plug Alert', 'fa-plug-circle-minus': 'Plug Minus',
+            'fa-plug-circle-plus': 'Plug Plus', 'fa-plug-circle-xmark': 'Plug X',
+            'fa-power-off': 'Power Off', 'fa-battery-full': 'Battery Full', 'fa-battery-three-quarters': 'Battery 3/4',
+            'fa-battery-half': 'Battery Half', 'fa-battery-quarter': 'Battery Quarter',
+            'fa-battery-empty': 'Battery Empty',
+
+            // Gauges & Meters
+            'fa-gauge': 'Gauge', 'fa-gauge-high': 'Gauge High', 'fa-gauge-simple': 'Gauge Simple',
+            'fa-gauge-simple-high': 'Gauge Simple High', 'fa-tachometer-alt': 'Tachometer',
+
+            // Industry & Tools
+            'fa-industry': 'Industry', 'fa-oil-can': 'Oil Can', 'fa-oil-well': 'Oil Well',
+            'fa-gas-pump': 'Gas Pump', 'fa-droplet': 'Droplet', 'fa-water': 'Water',
+            'fa-faucet': 'Faucet', 'fa-faucet-drip': 'Faucet Drip', 'fa-shower': 'Shower',
+
+            // Controls & Settings
+            'fa-circle': 'Circle', 'fa-circle-dot': 'Circle Dot', 'fa-gear': 'Gear',
+            'fa-gears': 'Gears', 'fa-sliders': 'Sliders', 'fa-toggle-on': 'Toggle On',
+            'fa-toggle-off': 'Toggle Off', 'fa-sun': 'Sun', 'fa-moon': 'Moon',
+            'fa-cloud': 'Cloud', 'fa-snowflake': 'Snowflake',
         };
 
         // Populate icon select
