@@ -207,6 +207,8 @@ hargassner_pellet:
   device_name: Hargassner Boiler
   language: EN
   sensor_set: STANDARD
+  pellet_energy_kwh_per_kg: 4.8  # Pellet energy content (3.0-6.0)
+  efficiency_percent: 90          # Boiler efficiency (50-100)
 ```
 
 ## Available Sensors (Standard Set)
@@ -225,14 +227,21 @@ hargassner_pellet:
 12. Pellet Stock (kg)
 13. Pellet Consumption (kg)
 14. Flow Temperature (°C)
-15. **Energy Consumption (kWh)** - Calculated
+15. **Heat Output (kWh)** - Calculated from pellet consumption with configurable energy content and efficiency
 
 ## Energy Dashboard Integration
 
 Energy sensor automatically created:
-- Formula: `Pellet Consumption (kg) × 4.8 = Energy (kWh)`
+
+- **Name:** "Wärmemenge" (DE) / "Heat Output" (EN)
+- **Formula:** `Pellet Consumption (kg) × Energy Content (kWh/kg) × Efficiency (%)`
+- **Configurable Parameters:**
+  - Pellet Energy Content: 3.0-6.0 kWh/kg (Default: 4.8)
+  - Boiler Efficiency: 50-100% (Default: 90%)
+- **Example:** 100 kg × 4.8 kWh/kg × 0.90 = 432 kWh
 - Compatible with HA Energy Dashboard
-- Tracks total energy from pellet heating
+- Tracks total heat output from pellet heating
+- Sensor attributes show current calculation parameters
 
 ## Security Considerations
 
