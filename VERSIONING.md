@@ -130,7 +130,7 @@ Include in GitHub release:
 
 | Version | Home Assistant | Python | Status |
 |---------|---------------|--------|--------|
-| 0.1.x   | ≥ 2023.1      | ≥ 3.11 | Current |
+| 0.1.x   | ≥ 2024.1      | ≥ 3.11 | Current |
 
 ## Decision Tree
 

@@ -101,24 +101,40 @@ async def async_setup_entry(
     # Add energy sensor
     entities.append(HargassnerEnergySensor(coordinator, entry))
 
-    # Add standard sensors
-    for sensor_def in STANDARD_SENSORS:
-        key, name, device_class, state_class, icon = sensor_def
-        entities.append(
-            HargassnerParameterSensor(
-                coordinator,
-                entry,
-                key,
-                f"{device_name} {name}",
-                device_class,
-                state_class,
-                icon,
-            )
-        )
-
-    # Add additional sensors if FULL mode
+    # Add sensors based on sensor set configuration
     if sensor_set == SENSOR_SET_FULL:
-        for sensor_def in ADDITIONAL_SENSORS:
+        # FULL mode: Create sensors for ALL parameters from firmware template
+        # Get all parameter names from the message parser
+        for param_def in coordinator.telnet_client._parser.parameters:
+            param_name = param_def.name
+
+            # Determine device class based on unit
+            device_class = None
+            if param_def.unit == "°C":
+                device_class = SensorDeviceClass.TEMPERATURE
+            elif param_def.unit == "A":
+                device_class = SensorDeviceClass.CURRENT
+
+            # Determine state class
+            state_class = None
+            if not param_def.is_digital:
+                state_class = SensorStateClass.MEASUREMENT
+
+            # Create sensor
+            entities.append(
+                HargassnerParameterSensor(
+                    coordinator,
+                    entry,
+                    param_name,
+                    f"{device_name} {param_name}",
+                    device_class,
+                    state_class,
+                    None,  # icon
+                )
+            )
+    else:
+        # STANDARD mode: Only create predefined sensors
+        for sensor_def in STANDARD_SENSORS:
             key, name, device_class, state_class, icon = sensor_def
             entities.append(
                 HargassnerParameterSensor(

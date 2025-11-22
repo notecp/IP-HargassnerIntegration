@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Home Assistant 2023.1 or later
+- Home Assistant 2024.1 or later
 - Hargassner pellet boiler with telnet interface
 - Network connectivity between Home Assistant and boiler
 
