@@ -41,20 +41,21 @@ _LOGGER = logging.getLogger(__name__)
 
 
 # Sensor definitions: (key, name, device_class, state_class, icon)
+# Note: Keys must match the exact parameter names from the firmware template XML
 STANDARD_SENSORS = [
-    ("TK", "Boiler Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, None),
-    ("TRG", "Smoke Gas Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, None),
-    ("Leistung", "Output Power", None, SensorStateClass.MEASUREMENT, "mdi:fire"),
-    ("Taus", "Outside Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, None),
-    ("TPo", "Buffer Temperature Top", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
-    ("TPm", "Buffer Temperature Middle", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
-    ("TPu", "Buffer Temperature Bottom", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
-    ("TB1", "Hot Water 1 Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
-    ("TRL", "Return Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:coolant-temperature"),
-    ("Puff Füllgrad", "Buffer Fill Level", None, SensorStateClass.MEASUREMENT, "mdi:gauge"),
-    ("Lagerstand", "Pellet Stock", None, SensorStateClass.TOTAL, "mdi:silo"),
-    ("Verbrauchszähler", "Pellet Consumption", None, SensorStateClass.TOTAL_INCREASING, "mdi:basket-unfill"),
-    ("TVL_1", "Flow 1 Temperature", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:coolant-temperature"),
+    ("TK", "Kesseltemperatur", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer"),
+    ("TRG", "Rauchgastemperatur", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:smoke"),
+    ("Leistung", "Ausgangsleistung", None, SensorStateClass.MEASUREMENT, "mdi:fire"),
+    ("Taus", "Außentemperatur", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer"),
+    ("TPo", "Puffer Oben", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
+    ("TPm", "Puffer Mitte", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
+    ("TPu", "Puffer Unten", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:thermometer-lines"),
+    ("TB1", "Warmwasser", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:water-boiler"),
+    ("TRL", "Rücklauftemperatur", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:coolant-temperature"),
+    ("Puff Füllgrad", "Pufferfüllgrad", None, SensorStateClass.MEASUREMENT, "mdi:gauge"),
+    ("Lagerstand", "Pelletvorrat", None, SensorStateClass.TOTAL, "mdi:silo"),
+    ("Verbrauchszähler", "Pelletverbrauch", None, SensorStateClass.TOTAL_INCREASING, "mdi:counter"),
+    ("TVL_1", "Vorlauf Heizkreis 1", SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, "mdi:coolant-temperature"),
 ]
 
 
@@ -95,13 +96,25 @@ async def async_setup_entry(
             device_class = None
             if param_def.unit == "°C":
                 device_class = SensorDeviceClass.TEMPERATURE
-            elif param_def.unit == "A":
+            elif param_def.unit == "mA":
                 device_class = SensorDeviceClass.CURRENT
+            elif param_def.unit in ["mbar", "bar"]:
+                device_class = SensorDeviceClass.PRESSURE
 
             # Determine state class
             state_class = None
             if not param_def.is_digital:
-                state_class = SensorStateClass.MEASUREMENT
+                # Most analog sensors are measurements
+                # Special cases for counters
+                if param_name in ["Verbrauchszähler", "Brennerstarts", "Betriebsstunden"]:
+                    state_class = SensorStateClass.TOTAL_INCREASING
+                elif param_name == "Lagerstand":
+                    state_class = SensorStateClass.TOTAL
+                else:
+                    state_class = SensorStateClass.MEASUREMENT
+
+            # Use parameter description as display name (already bilingual in firmware_templates.py)
+            display_name = param_def.description
 
             # Create sensor
             entities.append(
@@ -109,7 +122,7 @@ async def async_setup_entry(
                     coordinator,
                     entry,
                     param_name,
-                    f"{device_name} {param_name}",
+                    f"{device_name} {display_name}",
                     device_class,
                     state_class,
                     None,  # icon
@@ -272,6 +285,7 @@ class HargassnerErrorSensor(HargassnerBaseSensor):
     @property
     def native_value(self) -> str:
         """Return error status."""
+        # Check digital "Störung" bit sensor
         error_data = self.coordinator.data.get("Störung")
 
         if not error_data:
@@ -283,7 +297,7 @@ class HargassnerErrorSensor(HargassnerBaseSensor):
         if not error_value or error_value == "False" or error_value is False:
             return "OK"
 
-        # Get error code
+        # Get error code from "Störungs Nr" analog parameter
         error_code_data = self.coordinator.data.get("Störungs Nr")
         if error_code_data:
             error_code = str(error_code_data.get("value", ""))
