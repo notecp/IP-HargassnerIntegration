@@ -15,6 +15,7 @@
     },
     "error": {
       "cannot_connect": "Failed to connect to boiler. Please check IP address and ensure telnet is enabled.",
+      "timeout": "Connection timeout. Please check network connectivity and boiler availability.",
       "unknown": "Unexpected error occurred"
     },
     "abort": {

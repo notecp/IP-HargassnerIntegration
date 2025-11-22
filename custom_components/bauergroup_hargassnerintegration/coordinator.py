@@ -11,11 +11,12 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import DOMAIN, UPDATE_INTERVAL
 from .src.telnet_client import HargassnerTelnetClient
+from .types import ParameterData
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class HargassnerDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
+class HargassnerDataUpdateCoordinator(DataUpdateCoordinator[dict[str, ParameterData]]):
     """Class to manage fetching Hargassner data from telnet client."""
 
     def __init__(
@@ -41,7 +42,7 @@ class HargassnerDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             update_interval=timedelta(seconds=UPDATE_INTERVAL),
         )
 
-    async def _async_update_data(self) -> dict[str, Any]:
+    async def _async_update_data(self) -> dict[str, ParameterData]:
         """Fetch data from telnet client.
 
         Returns:

@@ -170,6 +170,7 @@ class HargassnerBaseSensor(CoordinatorEntity, SensorEntity):
             manufacturer="Hargassner",
             model="Nano-PK",
             sw_version=entry.data.get("firmware", "Unknown"),
+            configuration_url=f"http://{entry.data.get('host', '')}",
         )
 
 

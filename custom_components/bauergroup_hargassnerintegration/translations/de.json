@@ -15,6 +15,7 @@
     },
     "error": {
       "cannot_connect": "Verbindung zum Kessel fehlgeschlagen. Bitte überprüfen Sie die IP-Adresse und stellen Sie sicher, dass Telnet aktiviert ist.",
+      "timeout": "Verbindungs-Timeout. Bitte überprüfen Sie die Netzwerkverbindung und die Verfügbarkeit des Kessels.",
       "unknown": "Unerwarteter Fehler aufgetreten"
     },
     "abort": {

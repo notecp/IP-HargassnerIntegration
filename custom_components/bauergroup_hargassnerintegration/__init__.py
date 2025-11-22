@@ -20,7 +20,7 @@ PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Hargassner Pellet Boiler from a config entry."""
-    _LOGGER.info("Setting up Hargassner integration for %s", entry.data.get(CONF_HOST))
+    _LOGGER.debug("Setting up Hargassner integration for %s", entry.data.get(CONF_HOST))
 
     # Create telnet client
     telnet_client = HargassnerTelnetClient(
@@ -50,12 +50,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Setup platforms
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
+    # Register options update listener
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
+
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    _LOGGER.info("Unloading Hargassner integration")
+    _LOGGER.debug("Unloading Hargassner integration")
 
     # Unload platforms
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):

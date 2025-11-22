@@ -16,6 +16,8 @@ from ..const import (
     TELNET_RECONNECT_DELAY,
     TELNET_TIMEOUT,
 )
+from ..exceptions import HargassnerConnectionError, HargassnerTimeoutError
+from ..types import ParameterData, StatisticsData
 from .message_parser import HargassnerMessageParser
 
 _LOGGER = logging.getLogger(__name__)
@@ -55,12 +57,12 @@ class HargassnerTelnetClient:
         self._parser = HargassnerMessageParser(firmware_version)
 
         # Data storage
-        self._latest_data: dict[str, Any] = {}
+        self._latest_data: dict[str, ParameterData] = {}
         self._data_lock = asyncio.Lock()
         self._last_update: datetime | None = None
 
         # Statistics
-        self._stats = {
+        self._stats: StatisticsData = {
             "messages_received": 0,
             "messages_parsed": 0,
             "parse_errors": 0,
@@ -69,7 +71,7 @@ class HargassnerTelnetClient:
         }
 
         # Callbacks
-        self._data_callbacks: list[Callable[[dict[str, Any]], None]] = []
+        self._data_callbacks: list[Callable[[dict[str, ParameterData]], None]] = []
 
     async def async_start(self) -> None:
         """Start the telnet client and background receiver task."""
@@ -77,7 +79,7 @@ class HargassnerTelnetClient:
             _LOGGER.warning("Telnet client already running")
             return
 
-        _LOGGER.info("Starting telnet client for %s:%d", self._host, self._port)
+        _LOGGER.debug("Starting telnet client for %s:%d", self._host, self._port)
         self._running = True
 
         # Start receiver task
@@ -86,7 +88,7 @@ class HargassnerTelnetClient:
         # Wait for initial connection
         for _ in range(50):  # 5 seconds max
             if self._connected:
-                _LOGGER.info("Initial connection established")
+                _LOGGER.debug("Initial connection established")
                 return
             await asyncio.sleep(0.1)
 
@@ -94,7 +96,7 @@ class HargassnerTelnetClient:
 
     async def async_stop(self) -> None:
         """Stop the telnet client and cleanup resources."""
-        _LOGGER.info("Stopping telnet client")
+        _LOGGER.debug("Stopping telnet client")
         self._running = False
 
         # Cancel receiver task
@@ -155,7 +157,7 @@ class HargassnerTelnetClient:
     async def _connect(self) -> None:
         """Establish telnet connection to the boiler."""
         try:
-            _LOGGER.info("Connecting to %s:%d", self._host, self._port)
+            _LOGGER.debug("Connecting to %s:%d", self._host, self._port)
 
             self._reader, self._writer = await asyncio.wait_for(
                 asyncio.open_connection(self._host, self._port),
@@ -164,12 +166,16 @@ class HargassnerTelnetClient:
 
             self._connected = True
             self._stats["reconnections"] += 1
-            _LOGGER.info("Connected to boiler")
+            _LOGGER.debug("Connected to boiler")
 
-        except (OSError, asyncio.TimeoutError) as err:
+        except asyncio.TimeoutError as err:
+            _LOGGER.error("Connection timeout: %s", err)
+            self._stats["last_error"] = f"Connection timeout: {err}"
+            raise HargassnerTimeoutError(f"Connection to {self._host}:{self._port} timed out") from err
+        except OSError as err:
             _LOGGER.error("Failed to connect: %s", err)
             self._stats["last_error"] = f"Connection failed: {err}"
-            raise
+            raise HargassnerConnectionError(f"Failed to connect to {self._host}:{self._port}: {err}") from err
 
     async def _close_connection(self) -> None:
         """Close the telnet connection."""
@@ -246,7 +252,7 @@ class HargassnerTelnetClient:
             _LOGGER.error("Error processing data: %s", err, exc_info=True)
             self._stats["parse_errors"] += 1
 
-    async def get_latest_data(self) -> dict[str, Any]:
+    async def get_latest_data(self) -> dict[str, ParameterData]:
         """Get the latest parsed data.
 
         Returns:
@@ -255,7 +261,7 @@ class HargassnerTelnetClient:
         async with self._data_lock:
             return self._latest_data.copy()
 
-    def register_callback(self, callback: Callable[[dict[str, Any]], None]) -> None:
+    def register_callback(self, callback: Callable[[dict[str, ParameterData]], None]) -> None:
         """Register a callback for new data.
 
         Args:
@@ -264,7 +270,7 @@ class HargassnerTelnetClient:
         if callback not in self._data_callbacks:
             self._data_callbacks.append(callback)
 
-    def unregister_callback(self, callback: Callable[[dict[str, Any]], None]) -> None:
+    def unregister_callback(self, callback: Callable[[dict[str, ParameterData]], None]) -> None:
         """Unregister a data callback.
 
         Args:
@@ -284,7 +290,7 @@ class HargassnerTelnetClient:
         return self._last_update
 
     @property
-    def statistics(self) -> dict[str, Any]:
+    def statistics(self) -> StatisticsData:
         """Return client statistics."""
         return self._stats.copy()
 

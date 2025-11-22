@@ -8,5 +8,7 @@
   "requirements": [],
   "version": "0.1.0",
   "iot_class": "local_polling",
+  "integration_type": "device",
+  "quality_scale": "silver",
   "after_dependencies": ["logger"]
 }

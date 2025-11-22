@@ -1,98 +1,128 @@
 # Hargassner Pellet Boiler Integration for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Release](https://img.shields.io/github/release/bauer-group/IP-HargassnerIntegration.svg?style=flat-square)](https://github.com/bauer-group/IP-HargassnerIntegration/releases)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=flat-square)](https://github.com/custom-components/hacs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![GitHub Issues](https://img.shields.io/github/issues/bauer-group/IP-HargassnerIntegration.svg?style=flat-square)](https://github.com/bauer-group/IP-HargassnerIntegration/issues)
 
-Modern, professional Home Assistant integration for Hargassner pellet boilers with telnet interface.
+> Modern, professional Home Assistant integration for Hargassner pellet boilers with real-time telnet monitoring.
 
-## Features
+## ✨ Features
 
-- **Real-time monitoring** of boiler parameters via telnet
-- **Automatic reconnection** with exponential backoff
-- **Thread-safe** telnet client with background message processing
-- **Robust error handling** and encoding support (UTF-8, Latin-1, CP1252)
-- **GUI configuration** via Home Assistant UI (Config Flow)
-- **Firmware support** for V14_1HAR_q1 (additional versions can be added)
-- **Energy consumption tracking** with automatic kWh calculation
-- **Diagnostic sensors** for connection status and error monitoring
+- 🔥 **Real-time monitoring** of 228 boiler parameters via telnet
+- 🔄 **Automatic reconnection** with exponential backoff strategy
+- 🔒 **Thread-safe** async telnet client with background processing
+- 🛡️ **Robust error handling** with custom exception types
+- 🎛️ **GUI configuration** via Home Assistant Config Flow
+- 🔧 **Firmware support** for V14_1HAR_q1 (extensible architecture)
+- ⚡ **Energy Dashboard** integration with automatic kWh calculation
+- 🌍 **Bilingual** sensor names and states (EN/DE)
+- 📊 **Flexible sensor sets**: Standard (17 sensors) or Full (228 sensors)
+- 🔌 **Local polling** - no cloud dependency
 
-## Supported Models
+## 🔥 Supported Models
 
-- Hargassner Nano-PK (various firmware versions)
-- Other Hargassner models with telnet interface
+| Model | Firmware | Status |
+|-------|----------|--------|
+| Nano-PK | V14_1HAR_q1 | ✅ Fully tested |
+| Other Hargassner models | Custom | ⚠️ Requires firmware template |
 
-## Installation
+> **Note:** Additional firmware versions can be easily added via XML templates. See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for details.
 
-### HACS (Recommended)
+## 📦 Installation
 
-1. Open HACS in Home Assistant
-2. Go to "Integrations"
-3. Click the three dots in the top right corner
-4. Select "Custom repositories"
-5. Add `https://github.com/bauer-group/IP-HargassnerIntegration` and select "Integration" as category
-6. Click "Install"
-7. Restart Home Assistant
+### Method 1: HACS (Recommended)
 
-### Manual Installation
+1. Open **HACS** in Home Assistant
+2. Go to **Integrations**
+3. Click the **⋮** menu → **Custom repositories**
+4. Add repository:
+   - **URL:** `https://github.com/bauer-group/IP-HargassnerIntegration`
+   - **Category:** Integration
+5. Click **Install**
+6. **Restart Home Assistant**
 
-1. Copy the `custom_components/bauergroup_hargassnerintegration` folder to your Home Assistant's `custom_components` directory
-2. Restart Home Assistant
+### Method 2: Manual Installation
 
-## Configuration
-
-### Via UI (recommended)
-
-1. Go to **Settings** → **Devices & Services**
-2. Click **+ Add Integration**
-3. Search for **Bauergroup Hargassner**
-4. Enter the configuration:
-   - **Host/IP**: IP address of your boiler (e.g., `192.168.1.100`)
-   - **Firmware Version**: Select your boiler's firmware version
-   - **Device Name**: Friendly name for your boiler (default: "Hargassner")
-   - **Language**: Choose language for state translations (EN/DE)
-   - **Sensor Set**: Standard (basic sensors) or Full (all available sensors)
-
-### Via YAML (not recommended)
-
-```yaml
-# configuration.yaml
-bauergroup_hargassnerintegration:
-  host: 172.16.0.123
-  firmware: V14_1HAR_q1
-  name: "Hargassner Boiler"
-  language: EN
-  sensors: FULL
+```bash
+cd /config
+git clone https://github.com/bauer-group/IP-HargassnerIntegration.git
+cp -r IP-HargassnerIntegration/custom_components/bauergroup_hargassnerintegration custom_components/
 ```
 
-## Available Sensors
+Then restart Home Assistant.
 
-### Standard Sensor Set
+## ⚙️ Configuration
 
-- **Boiler State** - Current operating state (Off, Ignition, Full firing, etc.)
-- **Operation Status** - Error/warning notifications
-- **Boiler Temperature** - Current boiler temperature (°C)
-- **Smoke Gas Temperature** - Exhaust gas temperature (°C)
-- **Output** - Current heating power (%)
-- **Outside Temperature** - External temperature sensor (°C)
-- **Buffer Temperatures** - Multiple buffer tank sensors (°C)
-- **Return Temperature** - Heating circuit return (°C)
-- **Buffer Level** - Buffer tank fill level (%)
-- **Pellet Stock** - Remaining pellets (kg)
-- **Pellet Consumption** - Total pellets consumed (kg)
-- **Energy Consumption** - Calculated energy usage (kWh)
-- **Flow Temperature** - Heating circuit flow (°C)
+### Quick Start
 
-### Full Sensor Set
+1. **Settings** → **Devices & Services** → **Add Integration**
+2. Search for **"Bauergroup Hargassner"**
+3. Configure:
 
-Includes all standard sensors plus:
-- O2 levels and targets
-- Draft pressure
-- Motor currents (delivery, grate, cleaning)
-- Runtime counters
-- Ash removal statistics
-- All heating circuits (up to 6)
-- Hot water circuits (up to 3)
-- Digital I/O states
+| Field | Description | Example |
+|-------|-------------|---------|
+| **Host** | IP address of boiler | `192.168.1.100` |
+| **Firmware** | Boiler firmware version | `V14_1HAR_q1` |
+| **Device Name** | Friendly name | `Hargassner` |
+| **Language** | UI language (EN/DE) | `DE` |
+| **Sensor Set** | STANDARD or FULL | `FULL` |
+
+### Sensor Sets Comparison
+
+| Set | Sensors | Use Case |
+|-----|---------|----------|
+| **STANDARD** | 17 sensors | Basic monitoring, dashboards |
+| **FULL** | 228 sensors | Advanced diagnostics, all parameters |
+
+> 💡 **Tip:** Start with STANDARD, switch to FULL if you need detailed diagnostics.
+
+## 📊 Available Sensors
+
+### STANDARD Set (17 Sensors)
+
+**Always Available (4):**
+
+- 🔌 **Connection** - Connected/Disconnected
+- 🔥 **Boiler State** - Off, Ignition, Full Firing, etc.
+- ⚠️ **Operation Status** - OK / Error messages
+- ⚡ **Energy Consumption** - kWh (calculated from pellets)
+
+**Core Parameters (13):**
+
+- 🌡️ **Boiler Temperature** (TK)
+- 💨 **Flue Gas Temperature** (TRG)
+- 📈 **Output Power** (%)
+- 🌍 **Outside Temperature**
+- 🔵 **Buffer Top/Middle/Bottom** (3 sensors)
+- 💧 **Hot Water Temperature** (TB1)
+- ↩️ **Return Temperature** (TRL)
+- 📊 **Buffer Fill Level** (%)
+- 🪵 **Pellet Stock** (kg)
+- 📉 **Pellet Consumption** (kg)
+- ➡️ **Flow Temperature HC1** (TVL_1)
+
+### FULL Set (228 Sensors)
+
+All STANDARD sensors **plus** 211 additional parameters:
+
+**Analog Sensors (112):**
+
+- All temperatures (Boiler, Buffer, HC 1-8, DHW, Solar)
+- O2 levels, Lambda values, Draft pressure
+- All valve positions (HC 1-8)
+- Motor currents (delivery, grate, ash removal)
+- Pellet stock, consumption, ash content
+- System time (minute, hour, day, month, year)
+- Analog inputs (AN11-AN16)
+
+**Digital Sensors (112):**
+
+- Motors (M1-M38): Pumps, mixers, feeders, ash removal
+- Inputs (E1-E16): Switches, thermostats, errors
+- Heating circuit modes (HC1-HC8): Auto, Party, Holiday
+- Operating modes: Auto, Manual, Heating, Error
+- Time programs: Reduced, Normal, Party countdown
 
 ## Energy Dashboard Integration
 

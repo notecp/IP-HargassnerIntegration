@@ -25,6 +25,10 @@ from .const import (
     SENSOR_SET_FULL,
     SENSOR_SET_STANDARD,
 )
+from .exceptions import (
+    HargassnerConnectionError,
+    HargassnerTimeoutError,
+)
 from .src.telnet_client import HargassnerTelnetClient
 
 _LOGGER = logging.getLogger(__name__)
@@ -82,9 +86,15 @@ class HargassnerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     user_input[CONF_HOST],
                     user_input[CONF_FIRMWARE],
                 )
-            except Exception as err:
-                _LOGGER.error("Connection test failed: %s", err)
+            except HargassnerTimeoutError:
+                _LOGGER.error("Connection timeout")
+                errors["base"] = "timeout"
+            except HargassnerConnectionError:
+                _LOGGER.error("Connection failed")
                 errors["base"] = "cannot_connect"
+            except Exception as err:
+                _LOGGER.exception("Unexpected error during connection test: %s", err)
+                errors["base"] = "unknown"
             else:
                 # Create entry
                 return self.async_create_entry(
@@ -136,6 +146,11 @@ class HargassnerOptionsFlow(config_entries.OptionsFlow):
     ) -> FlowResult:
         """Manage options."""
         if user_input is not None:
+            # Update entry.data with new options (options alone won't reload sensors)
+            self.hass.config_entries.async_update_entry(
+                self.config_entry,
+                data={**self.config_entry.data, **user_input}
+            )
             return self.async_create_entry(title="", data=user_input)
 
         # Get current values
