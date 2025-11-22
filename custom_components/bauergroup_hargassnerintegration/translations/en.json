@@ -1,0 +1,35 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Hargassner Pellet Boiler",
+        "description": "Configure your Hargassner pellet boiler connection",
+        "data": {
+          "host": "IP Address or Hostname",
+          "firmware": "Firmware Version",
+          "device_name": "Device Name",
+          "language": "Language",
+          "sensor_set": "Sensor Set"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to boiler. Please check IP address and ensure telnet is enabled.",
+      "unknown": "Unexpected error occurred"
+    },
+    "abort": {
+      "already_configured": "This boiler is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options",
+        "data": {
+          "language": "Language",
+          "sensor_set": "Sensor Set"
+        }
+      }
+    }
+  }
+}

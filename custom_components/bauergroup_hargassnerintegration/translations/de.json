@@ -1,0 +1,35 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Hargassner Pelletkessel",
+        "description": "Konfigurieren Sie die Verbindung zu Ihrem Hargassner Pelletkessel",
+        "data": {
+          "host": "IP-Adresse oder Hostname",
+          "firmware": "Firmware-Version",
+          "device_name": "Gerätename",
+          "language": "Sprache",
+          "sensor_set": "Sensor-Set"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum Kessel fehlgeschlagen. Bitte überprüfen Sie die IP-Adresse und stellen Sie sicher, dass Telnet aktiviert ist.",
+      "unknown": "Unerwarteter Fehler aufgetreten"
+    },
+    "abort": {
+      "already_configured": "Dieser Kessel ist bereits konfiguriert"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Optionen",
+        "data": {
+          "language": "Sprache",
+          "sensor_set": "Sensor-Set"
+        }
+      }
+    }
+  }
+}
