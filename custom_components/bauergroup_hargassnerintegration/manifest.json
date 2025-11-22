@@ -1,6 +1,6 @@
 {
   "domain": "bauergroup_hargassnerintegration",
-  "name": "Bauergroup Hargassner Integration",
+  "name": "BAUERGROUP Hargassner Integration",
   "codeowners": ["@bauergroup"],
   "config_flow": true,
   "documentation": "https://github.com/bauer-group/IP-HargassnerIntegration",
