@@ -10,7 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, UPDATE_INTERVAL
-from .src.telnet_client import HargassnerTelnetClient
+from .telnet_client import HargassnerTelnetClient
 from .types import ParameterData
 
 _LOGGER = logging.getLogger(__name__)

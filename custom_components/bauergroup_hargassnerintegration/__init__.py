@@ -11,7 +11,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 
 from .const import DOMAIN
 from .coordinator import HargassnerDataUpdateCoordinator
-from .src.telnet_client import HargassnerTelnetClient
+from .telnet_client import HargassnerTelnetClient
 
 _LOGGER = logging.getLogger(__name__)
 

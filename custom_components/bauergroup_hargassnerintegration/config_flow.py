@@ -33,7 +33,7 @@ from .exceptions import (
     HargassnerConnectionError,
     HargassnerTimeoutError,
 )
-from .src.telnet_client import HargassnerTelnetClient
+from .telnet_client import HargassnerTelnetClient
 
 _LOGGER = logging.getLogger(__name__)
 

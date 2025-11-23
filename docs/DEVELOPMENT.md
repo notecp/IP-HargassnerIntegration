@@ -101,14 +101,12 @@ BAUERGROUP.Internal.Integration.Hargassner/
 │   ├── coordinator.py          # Data coordinator
 │   ├── exceptions.py           # Custom exceptions
 │   ├── types.py                # Type definitions
-│   ├── manifest.json           # Metadata
+│   ├── firmware_templates.py   # Firmware templates
+│   ├── message_parser.py       # Message parser
+│   ├── telnet_client.py        # Telnet client
 │   ├── sensor.py               # Sensor platform
+│   ├── manifest.json           # Metadata
 │   ├── icon.png                # Integration icon
-│   ├── src/                    # Business logic
-│   │   ├── __init__.py
-│   │   ├── firmware_templates.py
-│   │   ├── message_parser.py
-│   │   └── telnet_client.py
 │   └── translations/           # Localization
 │       ├── en.json
 │       └── de.json
@@ -140,7 +138,7 @@ BAUERGROUP.Internal.Integration.Hargassner/
 1. **Connection Test:**
 ```python
 # In Home Assistant Python shell
-from custom_components.bauergroup_hargassnerintegration.src.telnet_client import HargassnerTelnetClient
+from custom_components.bauergroup_hargassnerintegration.telnet_client import HargassnerTelnetClient
 
 client = HargassnerTelnetClient(host="192.168.1.100", firmware_version="V14_1HAR_q1")
 await client.async_start()
@@ -152,7 +150,7 @@ await client.async_stop()
 
 2. **Message Parsing Test:**
 ```python
-from custom_components.bauergroup_hargassnerintegration.src.message_parser import HargassnerMessageParser
+from custom_components.bauergroup_hargassnerintegration.message_parser import HargassnerMessageParser
 
 parser = HargassnerMessageParser("V14_1HAR_q1")
 message = "pm 7 10.1 9.0 67.4 70 64.5 65 11 91.3 ..."
@@ -167,7 +165,7 @@ Create tests in `tests/` directory:
 ```python
 # tests/test_message_parser.py
 import pytest
-from custom_components.bauergroup_hargassnerintegration.src.message_parser import HargassnerMessageParser
+from custom_components.bauergroup_hargassnerintegration.message_parser import HargassnerMessageParser
 
 def test_parse_valid_message():
     parser = HargassnerMessageParser("V14_1HAR_q1")

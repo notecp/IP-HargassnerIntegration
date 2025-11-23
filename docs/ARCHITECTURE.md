@@ -14,14 +14,12 @@ custom_components/bauergroup_hargassnerintegration/
 ├── coordinator.py             # Data update coordinator
 ├── exceptions.py              # Custom exception classes
 ├── types.py                   # Type definitions
-├── manifest.json              # Integration metadata
+├── firmware_templates.py      # Firmware version definitions
+├── message_parser.py          # Telnet message parser
+├── telnet_client.py           # Thread-safe telnet client
 ├── sensor.py                  # Sensor platform implementation
+├── manifest.json              # Integration metadata
 ├── icon.png                   # Integration icon
-├── src/                       # Core business logic
-│   ├── __init__.py
-│   ├── firmware_templates.py  # Firmware version definitions
-│   ├── message_parser.py      # Telnet message parser
-│   └── telnet_client.py       # Thread-safe telnet client
 └── translations/              # Localization files
     ├── en.json
     └── de.json
