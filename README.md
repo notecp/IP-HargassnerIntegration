@@ -47,7 +47,12 @@
 <img src="docs/images/Device_Detail_Example.png" alt="Device Detail" width="800"/>
 
 ### Energy Dashboard Integration
+
 <img src="docs/images/Energy_Dashboard_Example.png" alt="Energy Dashboard" width="800"/>
+
+### Custom Dashboard with Pellet Consumption Forecast
+
+<img src="docs/images/Custom_Dashboard.png" alt="Custom Dashboard" width="800"/>
 
 </div>
 
@@ -195,6 +200,7 @@ To adjust these values:
 - **[German Quick Start (SCHNELLSTART.md)](SCHNELLSTART.md)** - Schnellstartanleitung auf Deutsch
 - **[Detailed Installation Guide](docs/INSTALLATION.md)** - Step-by-step installation instructions
 - **[Energy Dashboard Setup](README.md#energy-dashboard-integration)** - Configure energy tracking
+- **[Custom Dashboard Setup](docs/CUSTOM_DASHBOARD.md)** - Complete dashboard with consumption forecasts and HDD analysis
 
 ### Technical Documentation
 
