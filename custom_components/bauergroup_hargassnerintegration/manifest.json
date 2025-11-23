@@ -2,7 +2,6 @@
   "domain": "bauergroup_hargassnerintegration",
   "name": "BAUERGROUP Hargassner Integration",
   "after_dependencies": ["logger"],
-  "brand": "bauergroup_hargassnerintegration",
   "codeowners": ["@bauer-group"],
   "config_flow": true,
   "dependencies": [],
