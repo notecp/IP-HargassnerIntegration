@@ -22,7 +22,9 @@ Erste Release-Kandidat Version der Bauergroup Hargassner Integration.
   - Firmware-Auswahl (V14_1HAR_q1)
   - Sprach-Auswahl (EN/DE)
   - Sensor-Set Auswahl (STANDARD/FULL)
-- **Data Update Coordinator** für effizienten Datenabruf
+- **Data Update Coordinator** für effizienten Datenabruf (5 Sekunden Intervall)
+- **Type Definitions** (`types.py`) für strukturierte Datentypen
+- **Custom Exceptions** (`exceptions.py`) für besseres Error Handling
 - **138 Parameter vollständig dokumentiert**
   - Alle Heizkreise (A, 1-6)
   - Alle Warmwasser-Kreise (A, 1-3)
@@ -30,20 +32,27 @@ Erste Release-Kandidat Version der Bauergroup Hargassner Integration.
   - Motor-Ströme
   - Buffer-Sensoren
   - Kategorisiert und strukturiert
-- **15+ Standard-Sensoren**, 30+ im Full-Modus
-  - Boiler State, Temperature, Power
-  - Buffer Temperatures
-  - Energy Dashboard Integration (kWh)
-  - Error Handling
-- **DAQ-Parser Tool** (`tools/daq_parser.py`)
-  - Extrahiert Firmware-Templates aus SD-Karten DAQ-Dateien
-  - Unterstützt JSON, Python und Text-Ausgabe
-  - Erleichtert Hinzufügen neuer Firmware-Versionen
+- **16 Standard-Sensoren** (13 Parameter + 4 Spezial-Sensoren)
+  - Connection Status (Verbindung)
+  - Boiler State (Kesselzustand) mit dynamischem Icon
+  - Operation Status (Betriebsstatus/Fehlercode)
+  - Heat Output (Wärmemenge) - Energy Dashboard kompatibel
+  - 13 vordefinierte Parameter-Sensoren (Temperaturen, Leistung, Vorrat, etc.)
+- **FULL-Modus**: Alle Firmware-Parameter als Sensoren
+  - Dynamisch basierend auf Firmware-Template
+  - Automatische Device Class Zuordnung (°C → Temperatur, etc.)
+  - Zweisprachige Beschreibungen (EN/DE)
+- **Development Tools** im `tools/` Verzeichnis
+  - `daq_parser.py` - Extrahiert Firmware-Templates aus DAQ-Dateien
+  - `message_generator.py` - Generiert Test-Nachrichten
+  - `parameter_validator.py` - Validiert Konsistenz der Parameter
+  - `telnet_tester.py` - Testet Telnet-Verbindung
 - **Umfassende Dokumentation**
   - ARCHITECTURE.md (Technische Architektur)
   - INSTALLATION.md (Installationsanleitung)
   - DEVELOPMENT.md (Entwickler-Leitfaden)
   - CONTRIBUTING.md (Beitrags-Richtlinien)
+  - ADDING_FIRMWARE.md / ADDING_FIRMWARE_DE.md (Firmware-Hinzufügen Anleitung)
   - VERSIONING.md (Semantic Versioning Guidelines)
   - COMMIT_GUIDELINES.md (Conventional Commits Standard)
 - **Übersetzungen** (Englisch, Deutsch)

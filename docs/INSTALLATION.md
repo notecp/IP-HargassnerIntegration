@@ -24,9 +24,9 @@
 
 1. Download the latest release from GitHub
 2. Extract the archive
-3. Copy `custom_components/hargassner_pellet` to your Home Assistant's `custom_components` directory:
+3. Copy `custom_components/bauergroup_hargassnerintegration` to your Home Assistant's `custom_components` directory:
    ```
-   <config_dir>/custom_components/hargassner_pellet/
+   <config_dir>/custom_components/bauergroup_hargassnerintegration/
    ```
 4. Restart Home Assistant
 
@@ -34,7 +34,7 @@
 
 Check Home Assistant logs for:
 ```
-INFO (MainThread) [homeassistant.setup] Setting up hargassner_pellet
+INFO (MainThread) [homeassistant.setup] Setting up bauergroup_hargassnerintegration
 ```
 
 ## Configuration
@@ -72,7 +72,7 @@ Press Ctrl+C to exit.
 
 1. Go to **Settings** → **Devices & Services**
 2. Click **+ Add Integration**
-3. Search for **Hargassner Pellet**
+3. Search for **BAUERGROUP Hargassner Integration**
 4. Fill in the configuration form:
 
    - **IP Address:** Enter boiler's IP (e.g., `192.168.1.100`)
@@ -82,8 +82,8 @@ Press Ctrl+C to exit.
    - **Device Name:** Choose a friendly name (default: "Hargassner")
    - **Language:** Select EN (English) or DE (German)
    - **Sensor Set:**
-     - **STANDARD** - Essential sensors (~15 entities)
-     - **FULL** - All available sensors (~30+ entities)
+     - **STANDARD** - 16 essential sensors (temperatures, output, stock, etc.)
+     - **FULL** - All available sensors from firmware template (varies by version)
 
 5. Click **Submit**
 
@@ -92,7 +92,7 @@ The integration will test the connection. If successful, sensors will be created
 ### Step 5: Verify Sensors
 
 1. Go to **Settings** → **Devices & Services**
-2. Click on **Hargassner Pellet**
+2. Click on **BAUERGROUP Hargassner Integration**
 3. Check that sensors are populated with data
 
 ## Troubleshooting
@@ -119,7 +119,7 @@ The integration will test the connection. If successful, sensors will be created
    logger:
      default: info
      logs:
-       custom_components.hargassner_pellet: debug
+       custom_components.bauergroup_hargassnerintegration: debug
    ```
 3. Verify firmware version is correct
 4. Check for parsing errors in logs
@@ -160,7 +160,7 @@ The integration will test the connection. If successful, sensors will be created
 You can change language and sensor set without removing the integration:
 
 1. Go to **Settings** → **Devices & Services**
-2. Click **Configure** on Hargassner Pellet
+2. Click **Configure** on BAUERGROUP Hargassner Integration
 3. Change settings
 4. Click **Submit**
 5. Reload integration or restart Home Assistant
@@ -178,7 +178,7 @@ The integration automatically creates an energy sensor compatible with HA's Ener
 
 1. Go to **Settings** → **Dashboards** → **Energy**
 2. Click **Add Consumption**
-3. Select **Hargassner Energy Consumption** sensor
+3. Select the **Heat Output** (Wärmemenge) sensor
 4. Configure as needed
 
 ## Firewall Configuration
@@ -206,7 +206,7 @@ If boiler is on different subnet:
 ### Manual Upgrade
 
 1. Download new release
-2. Replace `custom_components/hargassner_pellet` folder
+2. Replace `custom_components/bauergroup_hargassnerintegration` folder
 3. Restart Home Assistant
 
 **Note:** Check release notes for breaking changes!
@@ -214,12 +214,12 @@ If boiler is on different subnet:
 ## Uninstalling
 
 1. Go to **Settings** → **Devices & Services**
-2. Click **...** on Hargassner Pellet integration
+2. Click **...** on BAUERGROUP Hargassner Integration
 3. Select **Delete**
 4. Confirm deletion
 5. (Optional) Remove folder:
    ```
-   custom_components/hargassner_pellet/
+   custom_components/bauergroup_hargassnerintegration/
    ```
 6. Restart Home Assistant
 

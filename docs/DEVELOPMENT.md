@@ -36,7 +36,7 @@ pip install -r requirements_test.txt
 mkdir -p config/custom_components
 
 # Symlink this integration
-ln -s /path/to/hargassner_pellet config/custom_components/hargassner_pellet
+ln -s /path/to/BAUERGROUP.Internal.Integration.Hargassner/custom_components/bauergroup_hargassnerintegration config/custom_components/bauergroup_hargassnerintegration
 ```
 
 ### Running Home Assistant Development Server
@@ -53,19 +53,19 @@ Access at http://localhost:8123
 
 Use `black` for code formatting:
 ```bash
-black custom_components/hargassner_pellet/
+black custom_components/bauergroup_hargassnerintegration/
 ```
 
 ### Linting
 
 Use `pylint`:
 ```bash
-pylint custom_components/hargassner_pellet/
+pylint custom_components/bauergroup_hargassnerintegration/
 ```
 
 Use `mypy` for type checking:
 ```bash
-mypy custom_components/hargassner_pellet/
+mypy custom_components/bauergroup_hargassnerintegration/
 ```
 
 ### Import Order
@@ -93,15 +93,19 @@ from .const import DOMAIN
 ## Project Structure
 
 ```
-hargassner_pellet/
-├── custom_components/hargassner_pellet/
+BAUERGROUP.Internal.Integration.Hargassner/
+├── custom_components/bauergroup_hargassnerintegration/
 │   ├── __init__.py              # Integration setup
 │   ├── config_flow.py          # Configuration UI
 │   ├── const.py                # Constants
 │   ├── coordinator.py          # Data coordinator
+│   ├── exceptions.py           # Custom exceptions
+│   ├── types.py                # Type definitions
 │   ├── manifest.json           # Metadata
 │   ├── sensor.py               # Sensor platform
+│   ├── icon.png                # Integration icon
 │   ├── src/                    # Business logic
+│   │   ├── __init__.py
 │   │   ├── firmware_templates.py
 │   │   ├── message_parser.py
 │   │   └── telnet_client.py
@@ -111,10 +115,22 @@ hargassner_pellet/
 ├── docs/                       # Documentation
 │   ├── ARCHITECTURE.md
 │   ├── DEVELOPMENT.md
-│   └── CONTRIBUTING.md
-├── tests/                      # Tests (future)
+│   ├── INSTALLATION.md
+│   ├── CONTRIBUTING.md
+│   ├── ADDING_FIRMWARE.md
+│   └── ADDING_FIRMWARE_DE.md
+├── tools/                      # Development tools
+│   ├── daq_parser.py
+│   ├── message_generator.py
+│   ├── parameter_validator.py
+│   └── telnet_tester.py
+├── tests/                      # Tests
+│   └── test_message_parser.py
+├── firmware/                   # Firmware DAQ files
+├── benchmarks/                 # Performance benchmarks
 ├── README.md
-└── LICENSE
+├── LICENSE
+└── release.py                  # Release automation
 ```
 
 ## Testing
@@ -124,7 +140,7 @@ hargassner_pellet/
 1. **Connection Test:**
 ```python
 # In Home Assistant Python shell
-from custom_components.hargassner_pellet.src.telnet_client import HargassnerTelnetClient
+from custom_components.bauergroup_hargassnerintegration.src.telnet_client import HargassnerTelnetClient
 
 client = HargassnerTelnetClient(host="192.168.1.100", firmware_version="V14_1HAR_q1")
 await client.async_start()
@@ -136,7 +152,7 @@ await client.async_stop()
 
 2. **Message Parsing Test:**
 ```python
-from custom_components.hargassner_pellet.src.message_parser import HargassnerMessageParser
+from custom_components.bauergroup_hargassnerintegration.src.message_parser import HargassnerMessageParser
 
 parser = HargassnerMessageParser("V14_1HAR_q1")
 message = "pm 7 10.1 9.0 67.4 70 64.5 65 11 91.3 ..."
@@ -151,7 +167,7 @@ Create tests in `tests/` directory:
 ```python
 # tests/test_message_parser.py
 import pytest
-from custom_components.hargassner_pellet.src.message_parser import HargassnerMessageParser
+from custom_components.bauergroup_hargassnerintegration.src.message_parser import HargassnerMessageParser
 
 def test_parse_valid_message():
     parser = HargassnerMessageParser("V14_1HAR_q1")
@@ -177,7 +193,7 @@ Add to `configuration.yaml`:
 logger:
   default: info
   logs:
-    custom_components.hargassner_pellet: debug
+    custom_components.bauergroup_hargassnerintegration: debug
 ```
 
 ### Common Issues

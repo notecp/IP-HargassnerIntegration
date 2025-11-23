@@ -7,13 +7,16 @@ The Hargassner Pellet Boiler integration is built using modern Home Assistant be
 ## Component Structure
 
 ```
-hargassner_pellet/
+custom_components/bauergroup_hargassnerintegration/
 ├── __init__.py                 # Integration entry point
 ├── config_flow.py             # GUI configuration flow
 ├── const.py                   # Constants and configuration
 ├── coordinator.py             # Data update coordinator
+├── exceptions.py              # Custom exception classes
+├── types.py                   # Type definitions
 ├── manifest.json              # Integration metadata
 ├── sensor.py                  # Sensor platform implementation
+├── icon.png                   # Integration icon
 ├── src/                       # Core business logic
 │   ├── __init__.py
 │   ├── firmware_templates.py  # Firmware version definitions
@@ -244,8 +247,8 @@ hargassner_pellet/
 
 **Sensor Sets:**
 
-- **STANDARD**: 13 essential sensors (temperatures, output, stock, etc.)
-- **FULL**: All available parameters (30+ sensors depending on firmware)
+- **STANDARD**: 13 predefined sensors (essential temperatures, output, stock, heating circuit, etc.)
+- **FULL**: All available parameters from firmware template (varies by firmware version)
 
 ## Data Flow
 
@@ -382,8 +385,10 @@ Callbacks are executed in asyncio context:
     "host": "192.168.1.100",           # Required
     "firmware": "V14_1HAR_q1",         # Required
     "device_name": "Hargassner",       # Optional
-    "language": "EN",                  # Optional
-    "sensor_set": "STANDARD",          # Optional
+    "language": "EN",                  # Optional (EN or DE)
+    "sensor_set": "STANDARD",          # Optional (STANDARD or FULL)
+    "pellet_energy_kwh_per_kg": 4.8,   # Optional (default: 4.8)
+    "efficiency_percent": 90,          # Optional (default: 90)
 }
 ```
 
@@ -412,8 +417,8 @@ Requires integration reload to apply.
 
 4. **Sensor Creation:**
    - Only requested sensors are created
-   - STANDARD mode: ~15 entities
-   - FULL mode: ~30-50 entities (firmware dependent)
+   - STANDARD mode: 16 entities (13 predefined + connection + state + error + energy)
+   - FULL mode: All firmware parameters + 4 special sensors (varies by firmware)
 
 ## Extensibility
 
