@@ -101,7 +101,7 @@ Closes #15
 ### Dateien-Übersicht
 
 ```
-c:\Temp\nano_pk\
+./
 ├── custom_components/bauergroup_hargassnerintegration/     [Integration]
 │   ├── src/
 │   │   ├── firmware_templates.py           [✅ 138 Parameter]
@@ -144,7 +144,7 @@ c:\Temp\nano_pk\
 
 1. **Git Repository initialisieren:**
    ```bash
-   cd c:\Temp\nano_pk
+   cd /path/to/IP-HargassnerIntegration
    git init
    git add .
    git commit -m "feat: initial commit with complete integration
