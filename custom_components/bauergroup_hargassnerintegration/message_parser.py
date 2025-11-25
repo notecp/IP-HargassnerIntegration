@@ -171,7 +171,7 @@ class HargassnerMessageParser:
 
         # Check message length
         if len(values) != self._expected_length:
-            _LOGGER.warning(
+            _LOGGER.debug(
                 "Message length mismatch: expected %d, got %d",
                 self._expected_length,
                 len(values),
