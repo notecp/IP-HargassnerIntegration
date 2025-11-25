@@ -79,3 +79,6 @@ dmypy.json
 
 # Benchmarks
 .benchmarks/
+
+# Private firmware samples
+docs/private_firmware_samples
