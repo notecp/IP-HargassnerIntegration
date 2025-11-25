@@ -116,7 +116,7 @@ Open a terminal/command prompt and navigate to the integration's `tools` folder:
 **Windows:**
 
 ```bash
-cd C:\Temp\nano_pk\tools
+cd /path/to/IP-HargassnerIntegration/tools
 python daq_parser.py E:\DAQ00000.DAQ --output python > firmware_template.txt
 ```
 

@@ -5,7 +5,15 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
-## [Unreleased]
+## [0.1.2] - 2025-11-25
+
+### 🐛 Fixed
+
+- Korrektur der Firmware-Template für V14_1HAR_q1
+  - Fehlende digitale Parameter IDs 5 und 8 hinzugefügt als Reserved-Slots
+  - Erwartete Nachrichtenlänge jetzt korrekt: 121 Werte (112 analog + 9 digital)
+  - Längenprüfungs-Warnung auf Debug-Level herabgestuft ([message_parser.py](custom_components/bauergroup_hargassnerintegration/message_parser.py#L174))
+  - Template und Beschreibungen aktualisiert ([firmware_templates.py](custom_components/bauergroup_hargassnerintegration/firmware_templates.py#L22))
 
 ## [0.1.0] - 2025-11-22
 
